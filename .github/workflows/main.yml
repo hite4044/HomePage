@@ -8,7 +8,6 @@ name: Build And Submit
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
   pages: write
   id-token: write
 
@@ -43,12 +42,12 @@ jobs:
       uses: actions/configure-pages@v5
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         path: '.'
         
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v4
+      uses: actions/deploy-pages@v3
 
 
