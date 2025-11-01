@@ -1,15 +1,32 @@
 on:
   workflow_dispatch:
   push:
-    branches:
-    - main
+    branches: ["master"]
   schedule:
     - cron: "0 0 * * *"
+  
+# Simple workflow for deploying static content to GitHub Pages
+name: Build And Submit
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
-    name: Build My Profile Page
-    runs-on: ubuntu-20.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout Code   # 第一步：拉取代码
       uses: actions/checkout@v4
@@ -28,5 +45,8 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: index.html
-        path: /
+        path: '.'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
